@@ -42,7 +42,7 @@ function App() {
     // proxy 설정 덕분에 전체 주소 대신 /api/hello만 적어도 됩니다.
     axios.get('/api/hello')
       .then(response => {
-        setMessage(response.data); // 성공 시 받은 데이터를 message state에 저장
+        setMessage(response.data.message); // 성공 시 받은 데이터를 message state에 저장
       })
       .catch(error => {
         console.error("API 호출 중 에러 발생:", error);

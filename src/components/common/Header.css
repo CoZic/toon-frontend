@@ -1,0 +1,81 @@
+/* 헤더 전체를 감싸는 바 */
+.site-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #eaeaea;
+    padding: 0 20px;
+    /* 스크롤을 내려도 상단에 고정되도록 설정 */
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* 다른 요소들보다 항상 위에 있도록 설정 */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 헤더 내용물 컨테이너 */
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 1. 로고 스타일 */
+.logo a {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #007bff;
+    text-decoration: none;
+}
+
+/* 2. 메인 내비게이션 링크 */
+.main-nav a {
+    margin: 0 20px;
+    font-size: 1.1em;
+    font-weight: 500;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.main-nav a:hover {
+    color: #007bff;
+}
+
+/* 3. 오른쪽 메뉴 (검색, 사용자) */
+.right-menu {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* 검색창과 사용자 메뉴 사이 간격 */
+}
+
+/* 검색창 */
+.search-bar {
+    display: flex;
+}
+.search-bar input {
+    border: 1px solid #ccc;
+    border-right: none;
+    padding: 8px 12px;
+    border-radius: 5px 0 0 5px;
+    outline: none; /* 클릭 시 테두리 제거 */
+}
+.search-bar button {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+}
+
+/* 사용자 메뉴 */
+.user-actions a {
+    margin-left: 15px;
+    text-decoration: none;
+    color: #555;
+    font-size: 0.95em;
+}
+.user-actions a:hover {
+    color: #000;
+}

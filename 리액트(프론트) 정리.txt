@@ -1,0 +1,118 @@
+<리액트(프론트)>
+---------------------------------------------------------------------------------------------------------------------------------------------------
+1. 설치
+
+	1) Node.js 설치
+		- 설치가 될 때 패키지 매니저 도구인 npm도 같이 설치가 된다.
+		
+	2) React 프로젝트 생성
+		- 프로젝트 생성할 폴더 경로에 가서 cmd, powerShell 로 생성 명령어 입력
+		
+		● 명령어 : npx create-react-app [프로젝트명]
+			
+		☆ 오류 
+			[npx create-react-app > '이 시스템에서 스크립트를 실행할 수 없으므로...' 관련 오류 발생]				
+				1. 관리자 권한으로 cmd/powerShell 실행
+				2. Set-ExecutionPolicy Unrestricted 입력 > y > 엔터
+				* 보통 처음 React프로젝트 생성 시 발생
+				
+	3) VSC로 해당 프로젝트 폴더 열기		
+	
+	4) 서버 기동
+		● 명령어 : npm start
+		* http://localhost:3000 로 시작
+		
+		
+	◆ 새로운 환경에서 git을 통해 다운 받았을 때 node_modules이 없다면
+		npm install 을 하면 됌
+	
+
+===================================================================================================================================================
+2. 작동 흐름
+
+	0) 시작
+		npm start 실행 후 브라우저 접속
+	
+	1) index.html, index.js 가 최초 시작
+		index.js에서 index.html의 id='root'를 찾고 그 안에
+		App.js에 설정된 조립방식으로 만들어진 화면을 넣어 브라우저에 표출하도록 지시
+		
+	2) App.js
+		URL 주소에 따라 어떤식으로 조립하여 보여줄지 설정하는 파일
+
+		
+		2-1. 연결할 파일 세팅 
+			import [파일명] from '[./파일경로]';
+			
+		2-2. 해당 파일을 보여주도록 세팅	
+			<파일명 /> : 
+			
+		2-3. URL 주소에 따라 보여줄 파일 세팅
+			import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+			
+			<Router>
+				<Routes>
+					<Route path="URL" element={<파일명 />} /> : [URL]일 시 보여줄 파일 지정
+					
+		2-4. 불러올 컴포넌트 생성 시 필요한 파라미터 넘기기
+			<파일명 title="🔥 인기 TOP 10" 변수명={ 데이터 } />
+			ex) <WebtoonSection title="🔥 인기 TOP 10" webtoons={ popularWebtoons } />
+
+
+===================================================================================================================================================
+
+3. 백엔드 연결
+
+	1) package.json : 연결할 Backend 주소 proxy 설정
+		* .json 파일을 주석을 달 수 없기 때문에 편법으로 "_comment"에 설명을 적음
+	
+		...
+		},
+		"_comment": "이 proxy 설정은 axios.get('[호출URL]]') 호출 시, localhost:8080에 넘겨줘야 하는 요청을 처리하기 위한 것입니다.",
+		"proxy": "http://localhost:8080"	★★★
+		
+	2) axios 모듈 설치
+		터미널 : npm install axios 
+		
+	3) 백엔드와 연결할 페이지(.js)에 호출 설정
+		- json 형태로 리턴값이 와야함
+	
+		import React, { useState, useEffect } from 'react';
+		import axios from 'axios';
+		
+		// 백단 서버에서 받은 메시지를 저장
+		const [message, setMessage] = useState('');
+		
+		useEffect(() => {
+			// 백엔드 API를 호출합니다.
+			axios.get('[호출URL]')	★★★
+				.then(response => {
+					setMessage(response.data.message); // 성공 시 받은 데이터를 message state에 저장
+				})
+				.catch(error => {
+					console.error("API 호출 중 에러 발생:", error);
+					setMessage("서버와 통신 중 에러가 발생했습니다.");
+				});
+		}, []);
+		
+	4) 백엔드 : JSON 형태 데이터 반환 설정
+		
+		- @RestController
+		// 이 클래스가 REST API를 처리하는 컨트롤러임을 나타냅니다.
+		// 이 어노테이션을 붙이면, 이 클래스의 메소드들은 기본적으로 JSON 형태의 데이터를 반환합니다.
+		ex) 
+			@RestController
+			public class ApiController {
+
+				@GetMapping("/api/hello")
+				public Map<String, String> hello() {
+				
+					Map<String, String> response = new HashMap<>();
+					response.put("message", "안녕하세요! Spring Boot 백엔드에서 보낸 메시지입니다! 🎉");
+					
+					// Map 객체를 반환합니다. Spring Boot가 자동으로 이 Map을 JSON 형식으로 변환해 응답합니다.
+					return response;
+				}
+			}
+
+===================================================================================================================================================

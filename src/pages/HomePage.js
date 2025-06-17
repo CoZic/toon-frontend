@@ -13,8 +13,8 @@
 import React, { useState, useEffect } from 'react'; // useState와 useEffect를 import
 import axios from 'axios'; // axios import
 
-import MainBanner from '../components/MainBanner';
-import WebtoonSection from '../components/WebtoonSection';
+import MainBanner from '../components/main/MainBanner';
+import WebtoonSection from '../components/main/WebtoonSection';
 import './HomePage.css';
 
 // 실제로는 백엔드 API로부터 받아올 임시 데이터
@@ -26,7 +26,6 @@ const todaysWebtoons = [
     { id: 4, title: '세이렌', author: '설레다', thumbnailUrl: 'https://via.placeholder.com/200x250.png?text=Webtoon+4' },
     { id: 5, title: '입학용병', author: 'YC', thumbnailUrl: 'https://via.placeholder.com/200x250.png?text=Webtoon+5' },
 ];
-*/
 
 const popularWebtoons = [
     { id: 6, title: '알고있지만', author: '정서', thumbnailUrl: 'https://via.placeholder.com/200x250.png?text=Webtoon+6' },
@@ -35,36 +34,73 @@ const popularWebtoons = [
     { id: 9, title: '외모지상주의', author: '박태준', thumbnailUrl: 'https://via.placeholder.com/200x250.png?text=Webtoon+9' },
     { id: 10, title: '더 복서', author: '정지훈', thumbnailUrl: 'https://via.placeholder.com/200x250.png?text=Webtoon+10' },
 ];
+*/
 
 
 function HomePage() {
 
     // 1. API로부터 받아온 웹툰 데이터를 저장할 state를 만듭니다. 초기값은 빈 배열.
-    const [todaysWebtoons, setTodaysWebtoons] = useState([]);
+    const [todaysWebtoons, setTodaysWebtoons] = useState([]);   // 오늘의 업데이트 웹툰 데이터
+    const [popularWebtoons, setPopularWebtoons] = useState([]); // 인기 TOP 10 웹툰 데이터
+
     // 2. 데이터를 불러오는 중인지 상태를 관리할 state를 만듭니다.
     const [isLoading, setIsLoading] = useState(true);
+    
     // 3. 에러 상태를 관리할 state를 만듭니다.
     const [error, setError] = useState(null);
 
     // 4. 컴포넌트가 처음 렌더링될 때 API를 호출합니다.
     useEffect(() => {
+
+    /*
+        // 4-1. 하나의 API 호출 시 axios.get(호출할 URL)을 사용
         const fetchTodaysWebtoons = async () => {
-        try {
-            // 백엔드 API 호출 (Proxy 설정 덕분에 전체 주소를 적지 않아도 됩니다)
-            const response = await axios.get('/api/webtoons/today');
-            // 성공적으로 데이터를 받아오면 state를 업데이트합니다.
-            setTodaysWebtoons(response.data);
-        } catch (err) {
-            // 에러가 발생하면 에러 상태를 업데이트합니다.
-            console.error("오늘의 웹툰 데이터 로딩 실패:", err);
-            setError(err);
-        } finally {
-            // 성공하든 실패하든 로딩 상태를 false로 변경합니다.
-            setIsLoading(false);
-        }
+            try {
+                
+                // 백엔드 API 호출 (Proxy 설정 덕분에 전체 주소를 적지 않아도 됩니다)
+                const response = await axios.get('/api/webtoons/today');
+
+                // 성공적으로 데이터를 받아오면 state를 업데이트합니다.
+                setTodaysWebtoons(response.data);
+
+            } catch (err) {
+                // 에러가 발생하면 에러 상태를 업데이트합니다.
+                console.error("오늘의 웹툰 데이터 로딩 실패:", err);
+                setError(err);
+            } finally {
+                // 성공하든 실패하든 로딩 상태를 false로 변경합니다.
+                setIsLoading(false);
+            }
         };
 
         fetchTodaysWebtoons();
+    */
+
+        // 4-2. 여러 API를 동시에 호출할 때는 Promise.all을 사용
+        // Promise.all : 두 개의 API 호출을 동시에 출발시켜서, 둘 다 도착하면 다음 작업을 처리하는 방식
+        const fetchAllWebtoons = async () => {
+            try {
+
+                // Promise.all을 사용해 두 API를 동시에 요청합니다.
+                const [todayResponse, popularResponse] = await Promise.all([
+                    axios.get('/api/webtoons/today'),
+                    axios.get('/api/webtoons/popular')
+                ]);
+
+                // 4. 각각의 응답 데이터를 각자의 state에 저장합니다.
+                setTodaysWebtoons(todayResponse.data);
+                setPopularWebtoons(popularResponse.data);
+
+            } catch (err) {
+                console.error("웹툰 데이터 로딩 실패:", err);
+                setError(err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchAllWebtoons();
+
     }, []); // 빈 배열을 전달하여 최초 1회만 실행되도록 합니다.
 
     // 5. 로딩 중일 때 보여줄 화면

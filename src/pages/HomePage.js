@@ -130,7 +130,8 @@ function HomePage() {
         {/* 
             isLoading이 true이면 스켈레톤 UI를, false이면 실제 데이터를 보여줍니다. 
             isLoading ? ( ... ) : ( ... ) 사용 시 각 부분은 그 자체로 완결된 하나의 값을 반환해야 하기 때문에 
-            유령 부모 세팅해야 함 : <></>
+            유령 부모 세팅해야 함
+                <></> : React.Fragment
         */}
             { isLoading ? (
                 <>

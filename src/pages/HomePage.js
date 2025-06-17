@@ -15,6 +15,7 @@ import axios from 'axios'; // axios import
 
 import MainBanner from '../components/main/MainBanner';
 import WebtoonSection from '../components/main/WebtoonSection';
+import WebtoonCardSkeleton from '../components/main/skeleton/WebtoonCardSkeleton'; // 스켈레톤 컴포넌트 import
 import './HomePage.css';
 
 // 실제로는 백엔드 API로부터 받아올 임시 데이터
@@ -95,7 +96,7 @@ function HomePage() {
                 console.error("웹툰 데이터 로딩 실패:", err);
                 setError(err);
             } finally {
-                setIsLoading(false);
+                setIsLoading(false);    // 모든 API 호출이 끝나면 로딩 상태를 false로 변경합니다. > 로딩이 끝났음을 의미
             }
         };
 
@@ -103,10 +104,12 @@ function HomePage() {
 
     }, []); // 빈 배열을 전달하여 최초 1회만 실행되도록 합니다.
 
-    // 5. 로딩 중일 때 보여줄 화면
+    // 5. 로딩 중일 때 보여줄 화면 > 스켈레톤 로더를 사용으로 대체됨
+    /*
     if (isLoading) {
         return <div>데이터를 불러오는 중입니다...</div>;
     }
+    */
 
     // 6. 에러가 발생했을 때 보여줄 화면
     if (error) {
@@ -117,10 +120,59 @@ function HomePage() {
     return (
         <div className="homepage-container">
             <MainBanner />
-
+            
+        {/* 삼항 연산자를 사용한 스켈레톤 로더 적용으로 대체됨
             <WebtoonSection title="🚀 오늘의 업데이트" webtoons={ todaysWebtoons } />
 
             <WebtoonSection title="🔥 인기 TOP 10" webtoons={ popularWebtoons } />
+        */}
+
+        {/* 
+            isLoading이 true이면 스켈레톤 UI를, false이면 실제 데이터를 보여줍니다. 
+            isLoading ? ( ... ) : ( ... ) 사용 시 각 부분은 그 자체로 완결된 하나의 값을 반환해야 하기 때문에 
+            유령 부모 세팅해야 함 : <></>
+        */}
+            { isLoading ? (
+                <>
+                    <section className="webtoon-section">
+                        <h2 className="section-title">🚀 오늘의 업데이트</h2>
+                        <div className="webtoon-list">
+                            {/* 
+                                임시 배열을 만들어 5개의 스켈레톤 카드를 렌더링 
+                                
+                                1. Array.from(...) : 빈 배열을 생성
+                                2. length: 5 : 5개의 요소를 가진 배열을 생성
+                                    * Array.from({ length: 5 }) : 5개의 비어있는(undefined) 칸을 가진 배열 생성([undefined, undefined, undefined, undefined, undefined])
+                                
+                                3. .map() : 배열의 각 항목을 순회하며 새로운 값으로 변환하여 새 배열을 생성
+                                
+                                4. (_, index): .map() 함수는 각 항목을 순회할 때 두 가지 정보, 즉 (값, 인덱스)를 제공
+                                    _ : 현재 값(value)
+                                        지금 배열의 모든 값은 undefined이므로 우리는 이 값이 필요 없습니다. 프로그래밍에서는 "이 파라미터는 존재하지만 사용하지 않겠다"는 의미로 관례상 언더스코어(_)를 사용
+                                    index : 현재 항목의 순번(0, 1, 2, 3, 4)을 의미
+                            */}
+                            {Array.from({ length: 5 }).map((_, index) => (
+                                <WebtoonCardSkeleton key={index} />
+                            ))}
+                        </div>
+                    </section>
+                    <section className="webtoon-section">
+                        <h2 className="section-title">🔥 인기 TOP 10</h2>
+                        <div className="webtoon-list">
+                            {Array.from({ length: 5 }).map((_, index) => (
+                                <WebtoonCardSkeleton key={index} />
+                            ))}
+                        </div>
+                    </section>
+                </>
+            ) : (
+                <>
+                    <WebtoonSection title="🚀 오늘의 업데이트" webtoons={todaysWebtoons} />
+                    <WebtoonSection title="🔥 인기 TOP 10" webtoons={popularWebtoons} />
+                </>
+            )}
+
+
         </div>
     );
 }

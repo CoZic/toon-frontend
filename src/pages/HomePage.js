@@ -14,8 +14,9 @@ import React, { useState, useEffect } from 'react'; // useState와 useEffect를 
 import axios from 'axios'; // axios import
 
 import MainBanner from '../components/main/MainBanner';
+import MainBannerSkeleton from '../components/main/skeleton/MainBannerSkeleton';
 import WebtoonSection from '../components/main/WebtoonSection';
-import WebtoonCardSkeleton from '../components/main/skeleton/WebtoonCardSkeleton'; // 스켈레톤 컴포넌트 import
+import WebtoonCardSkeleton from '../components/main/skeleton/WebtoonCardSkeleton'; // 오늘의, Top10 웹툰 - 스켈레톤 컴포넌트
 import './HomePage.css';
 
 // 실제로는 백엔드 API로부터 받아올 임시 데이터
@@ -41,6 +42,7 @@ const popularWebtoons = [
 function HomePage() {
 
     // 1. API로부터 받아온 웹툰 데이터를 저장할 state를 만듭니다. 초기값은 빈 배열.
+    const [mainBannerData, setMainBannerData] = useState(null);
     const [todaysWebtoons, setTodaysWebtoons] = useState([]);   // 오늘의 업데이트 웹툰 데이터
     const [popularWebtoons, setPopularWebtoons] = useState([]); // 인기 TOP 10 웹툰 데이터
 
@@ -83,12 +85,14 @@ function HomePage() {
             try {
 
                 // Promise.all을 사용해 두 API를 동시에 요청합니다.
-                const [todayResponse, popularResponse] = await Promise.all([
+                const [bannerResponse, todayResponse, popularResponse] = await Promise.all([
+                    axios.get('/api/webtoons/mainbanner'),
                     axios.get('/api/webtoons/today'),
                     axios.get('/api/webtoons/popular')
                 ]);
 
                 // 4. 각각의 응답 데이터를 각자의 state에 저장합니다.
+                setMainBannerData(bannerResponse.data); 
                 setTodaysWebtoons(todayResponse.data);
                 setPopularWebtoons(popularResponse.data);
 
@@ -119,14 +123,15 @@ function HomePage() {
     // 7. 성공적으로 데이터를 불러왔을 때 보여줄 화면
     return (
         <div className="homepage-container">
-            <MainBanner />
+
+            {/* 로딩 상태에 따라 MainBanner에 데이터를 전달하거나, 스켈레톤을 보여줌 */}
+            {isLoading ? (
+                <MainBannerSkeleton /> // 배너용 스켈레톤
+            ) : (
+                <MainBanner bannerData={mainBannerData} />
+            )}
             
-        {/* 삼항 연산자를 사용한 스켈레톤 로더 적용으로 대체됨
-            <WebtoonSection title="🚀 오늘의 업데이트" webtoons={ todaysWebtoons } />
-
-            <WebtoonSection title="🔥 인기 TOP 10" webtoons={ popularWebtoons } />
-        */}
-
+        
         {/* 
             isLoading이 true이면 스켈레톤 UI를, false이면 실제 데이터를 보여줍니다. 
             isLoading ? ( ... ) : ( ... ) 사용 시 각 부분은 그 자체로 완결된 하나의 값을 반환해야 하기 때문에 

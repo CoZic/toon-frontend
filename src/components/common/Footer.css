@@ -1,0 +1,45 @@
+.site-footer {
+    background-color: #2c3e50; /* 헤더와 대비되는 어두운 색상 */
+    color: #bdc3c7; /* 밝은 회색 텍스트 */
+    padding: 40px 20px;
+    font-size: 0.9em;
+    /* App.css에서 flex 레이아웃을 설정할 때 푸터가 하단에 위치하도록 함 */
+    margin-top: auto; 
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.footer-links {
+    margin-bottom: 20px;
+}
+
+.footer-links a {
+    color: #ecf0f1;
+    text-decoration: none;
+    margin: 0 15px;
+    transition: color 0.2s;
+}
+
+.footer-links a:hover {
+    color: #3498db;
+}
+
+.footer-info {
+    margin-bottom: 20px;
+    font-size: 0.8em;
+    color: #95a5a6;
+}
+
+.footer-info p {
+    margin: 5px 0;
+}
+
+.footer-copyright {
+    border-top: 1px solid #34495e;
+    padding-top: 20px;
+    font-size: 0.8em;
+}

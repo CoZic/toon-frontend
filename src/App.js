@@ -77,10 +77,13 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Header from './components/common/Header';
 import HomePage from './pages/HomePage';
+import Footer from './components/common/Footer';
+import './App.css'; // 레이아웃 조정을 위해)
 
 function App() {
 	return (
 		<Router>
+			<div className="app-container">
 
 			{/* 
 				import Header from './components/common/Header';
@@ -89,21 +92,23 @@ function App() {
 				이 컴포넌트는 사이트의 상단에 고정된 헤더 역할을 합니다.
 				헤더에는 로고, 내비게이션 링크, 검색창 등이 포함되어 있습니다.
 			*/}
-			<Header />
+			
+				<Header />
 
-			{/* 메인 콘텐츠 영역 */}
-			<main>
-				<Routes>
-					{/* URL 주소가 /이면, HomePage.js 상세 설명서에 따라 조립 */}
-					<Route path="/" element={<HomePage />} />
+				{/* 메인 콘텐츠 영역 */}
+				<main className="main-content">
+					<Routes>
+						{/* URL 주소가 /이면, HomePage.js 상세 설명서에 따라 조립 */}
+						<Route path="/" element={<HomePage />} />
 
-					{/* <Route path="/webtoon/:id" element={<WebtoonDetailPage />} /> */}
-					{/* 다른 페이지 라우트들을 여기에 추가 */}
-				</Routes>
-			</main>
+						{/* <Route path="/webtoon/:id" element={<WebtoonDetailPage />} /> */}
+						{/* 다른 페이지 라우트들을 여기에 추가 */}
+					</Routes>
+				</main>
 
-			{/* 필요하다면 여기에 공통 푸터를 추가할 수 있습니다. */}
+				<Footer />
 
+			</div>
 		</Router>
 	);
 }

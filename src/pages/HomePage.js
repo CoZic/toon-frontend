@@ -127,30 +127,30 @@ function HomePage() {
         */}
             { isLoading ? (
                 <>
+                    {/* 
+                        임시 배열을 만들어 5개의 스켈레톤 카드를 렌더링 
+                        
+                        1. Array.from(...) : 빈 배열을 생성
+                        2. length: 5 : 5개의 요소를 가진 배열을 생성
+                            * Array.from({ length: 5 }) : 5개의 비어있는(undefined) 칸을 가진 배열 생성([undefined, undefined, undefined, undefined, undefined])
+                        
+                        3. .map() : 배열의 각 항목을 순회하며 새로운 값으로 변환하여 새 배열을 생성
+                        
+                        4. (_, index): .map() 함수는 각 항목을 순회할 때 두 가지 정보, 즉 (값, 인덱스)를 제공
+                            _ : 현재 값(value)
+                                지금 배열의 모든 값은 undefined이므로 우리는 이 값이 필요 없습니다. 프로그래밍에서는 "이 파라미터는 존재하지만 사용하지 않겠다"는 의미로 관례상 언더스코어(_)를 사용
+                            index : 현재 항목의 순번(0, 1, 2, 3, 4)을 의미
+                    */}
                     <section className="webtoon-section">
-                        <h2 className="section-title">🚀 오늘의 업데이트</h2>
+                        <h2 className="section-title">🔥 인기 TOP 10</h2>
                         <div className="webtoon-list">
-                            {/* 
-                                임시 배열을 만들어 5개의 스켈레톤 카드를 렌더링 
-                                
-                                1. Array.from(...) : 빈 배열을 생성
-                                2. length: 5 : 5개의 요소를 가진 배열을 생성
-                                    * Array.from({ length: 5 }) : 5개의 비어있는(undefined) 칸을 가진 배열 생성([undefined, undefined, undefined, undefined, undefined])
-                                
-                                3. .map() : 배열의 각 항목을 순회하며 새로운 값으로 변환하여 새 배열을 생성
-                                
-                                4. (_, index): .map() 함수는 각 항목을 순회할 때 두 가지 정보, 즉 (값, 인덱스)를 제공
-                                    _ : 현재 값(value)
-                                        지금 배열의 모든 값은 undefined이므로 우리는 이 값이 필요 없습니다. 프로그래밍에서는 "이 파라미터는 존재하지만 사용하지 않겠다"는 의미로 관례상 언더스코어(_)를 사용
-                                    index : 현재 항목의 순번(0, 1, 2, 3, 4)을 의미
-                            */}
                             {Array.from({ length: 5 }).map((_, index) => (
                                 <WebtoonCardSkeleton key={index} />
                             ))}
                         </div>
                     </section>
                     <section className="webtoon-section">
-                        <h2 className="section-title">🔥 인기 TOP 10</h2>
+                        <h2 className="section-title">🚀 오늘의 업데이트</h2>
                         <div className="webtoon-list">
                             {Array.from({ length: 5 }).map((_, index) => (
                                 <WebtoonCardSkeleton key={index} />
@@ -160,8 +160,8 @@ function HomePage() {
                 </>
             ) : (
                 <>
-                    <WebtoonSection title="🚀 오늘의 업데이트" webtoons={todaysWebtoons} />
                     <WebtoonSection title="🔥 인기 TOP 10" webtoons={popularWebtoons} />
+                    <WebtoonSection title="🚀 오늘의 업데이트" webtoons={todaysWebtoons} />
                 </>
             )}
 

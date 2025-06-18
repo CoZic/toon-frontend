@@ -19,26 +19,6 @@ import WebtoonSection from '../components/main/WebtoonSection';
 import WebtoonCardSkeleton from '../components/main/skeleton/WebtoonCardSkeleton'; // 오늘의, Top10 웹툰 - 스켈레톤 컴포넌트
 import './HomePage.css';
 
-// 실제로는 백엔드 API로부터 받아올 임시 데이터
-/*
-const todaysWebtoons = [
-    { id: 1, title: '나 혼자만 레벨업', author: '추공', thumbnailUrl: 'https://via.placeholder.com/200x250.png?text=Webtoon+1' },
-    { id: 2, title: '전지적 독자 시점', author: '싱숑', thumbnailUrl: 'https://via.placeholder.com/200x250.png?text=Webtoon+2' },
-    { id: 3, title: '화산귀환', author: '비가', thumbnailUrl: 'https://via.placeholder.com/200x250.png?text=Webtoon+3' },
-    { id: 4, title: '세이렌', author: '설레다', thumbnailUrl: 'https://via.placeholder.com/200x250.png?text=Webtoon+4' },
-    { id: 5, title: '입학용병', author: 'YC', thumbnailUrl: 'https://via.placeholder.com/200x250.png?text=Webtoon+5' },
-];
-
-const popularWebtoons = [
-    { id: 6, title: '알고있지만', author: '정서', thumbnailUrl: 'https://via.placeholder.com/200x250.png?text=Webtoon+6' },
-    { id: 7, title: '유미의 세포들', author: '이동건', thumbnailUrl: 'https://via.placeholder.com/200x250.png?text=Webtoon+7' },
-    { id: 8, title: '신의 탑', author: 'SIU', thumbnailUrl: 'https://via.placeholder.com/200x250.png?text=Webtoon+8' },
-    { id: 9, title: '외모지상주의', author: '박태준', thumbnailUrl: 'https://via.placeholder.com/200x250.png?text=Webtoon+9' },
-    { id: 10, title: '더 복서', author: '정지훈', thumbnailUrl: 'https://via.placeholder.com/200x250.png?text=Webtoon+10' },
-];
-*/
-
-
 function HomePage() {
 
     // 1. API로부터 받아온 웹툰 데이터를 저장할 state를 만듭니다. 초기값은 빈 배열.
@@ -86,13 +66,20 @@ function HomePage() {
 
                 // Promise.all을 사용해 두 API를 동시에 요청합니다.
                 const [bannerResponse, todayResponse, popularResponse] = await Promise.all([
-                    axios.get('/api/webtoons/mainbanner'),
-                    axios.get('/api/webtoons/today'),
-                    axios.get('/api/webtoons/popular')
+                    // axios.get('/api/webtoons/mainbanner'),
+                    // axios.get('/api/webtoons/today'),
+                    // axios.get('/api/webtoons/popular')
+
+                    // RestFull API를 사용하여 ?category= 방식으로 호출 URL 변경
+                    axios.get('/api/webtoons?featured=true'),   // 1. 메인 배너 데이터 호출
+                    axios.get('/api/webtoons?category=today'),  // 2. 오늘의 업데이트 데이터 호출
+                    axios.get('/api/webtoons?category=popular') // 3. 인기 TOP 10 데이터 호출
                 ]);
 
                 // 4. 각각의 응답 데이터를 각자의 state에 저장합니다.
-                setMainBannerData(bannerResponse.data); 
+                if (bannerResponse.data && bannerResponse.data.length > 0) {
+                    setMainBannerData(bannerResponse.data[0]);
+                }
                 setTodaysWebtoons(todayResponse.data);
                 setPopularWebtoons(popularResponse.data);
 

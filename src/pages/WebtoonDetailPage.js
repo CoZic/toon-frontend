@@ -10,7 +10,7 @@ import ErrorPage from './common/ErrorPage'; // 공통 에러 페이지 import
 
 function WebtoonDetailPage() {
 
-    // 1. URL 파라미터에서 webtoonId 값을 가져옵니다. (App.js의 :webtoonId와 이름 일치)
+    // 1. URL 파라미터에서 contentId 값을 가져옵니다. (App.js의 :contentId와 이름 일치)
     const { webtoonId } = useParams();
     const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수
     console.log("WebtoonDetailPage - webtoonId:", webtoonId);

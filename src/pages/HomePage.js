@@ -13,6 +13,8 @@
 import React, { useState, useEffect } from 'react'; // useState와 useEffect를 import
 import axios from 'axios'; // axios import
 
+import ErrorPage from '../pages/common/ErrorPage'; // 공통 에러 페이지 import
+
 import MainBanner from '../components/main/MainBanner';
 import MainBannerSkeleton from '../components/main/skeleton/MainBannerSkeleton';
 import WebtoonSection from '../components/main/WebtoonSection';
@@ -71,7 +73,7 @@ function HomePage() {
                     // axios.get('/api/webtoons/popular')
 
                     // RestFull API를 사용하여 ?category= 방식으로 호출 URL 변경
-                    axios.get('/api/webtoons?featured=true'),   // 1. 메인 배너 데이터 호출
+                    axios.get('/api/webtoons?category=featured'),   // 1. 메인 배너 데이터 호출
                     axios.get('/api/webtoons?category=today'),  // 2. 오늘의 업데이트 데이터 호출
                     axios.get('/api/webtoons?category=popular') // 3. 인기 TOP 10 데이터 호출
                 ]);
@@ -104,7 +106,7 @@ function HomePage() {
 
     // 6. 에러가 발생했을 때 보여줄 화면
     if (error) {
-        return <div>데이터를 불러오는 중 에러가 발생했습니다.</div>;
+        return <ErrorPage message="데이터를 불러오는 중 에러가 발생했습니다." />;
     }
 
     // 7. 성공적으로 데이터를 불러왔을 때 보여줄 화면

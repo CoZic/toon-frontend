@@ -77,6 +77,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Header from './components/common/Header';
 import HomePage from './pages/HomePage';
+import WebtoonDetailPage from './pages/WebtoonDetailPage'; // 웹툰 상세 페이지
 import Footer from './components/common/Footer';
 import './App.css'; // 레이아웃 조정을 위해)
 
@@ -103,6 +104,8 @@ function App() {
 
 						{/* <Route path="/webtoon/:id" element={<WebtoonDetailPage />} /> */}
 						{/* 다른 페이지 라우트들을 여기에 추가 */}
+            			<Route path="/webtoon/:webtoonId" element={<WebtoonDetailPage />} />
+
 					</Routes>
 				</main>
 

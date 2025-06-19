@@ -1,0 +1,56 @@
+.viewer-container {
+    background-color: #1e1e1e; /* 어두운 배경 */
+    display: flex;
+    justify-content: center;
+}
+
+.viewer-webtoon {
+    max-width: 800px;
+    width: 100%;
+}
+
+.viewer-image {
+    width: 100%;
+    display: block; /* 이미지 사이의 미세한 간격 제거 */
+}
+
+/* 뷰어 상하단 내비게이션 바 */
+.viewer-nav {
+    position: sticky;
+    z-index: 1001; /* 헤더보다 위에 오도록 */
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+.viewer-nav.top {
+    top: 70px; /* 헤더 높이만큼 아래에 위치 */
+}
+.viewer-nav.bottom {
+    bottom: 0;
+}
+
+.episode-title-nav {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.nav-buttons button, .nav-buttons a {
+    background-color: #444;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1em;
+}
+
+.nav-buttons button:disabled {
+    background-color: #222;
+    color: #666;
+    cursor: not-allowed;
+}

@@ -1,56 +1,90 @@
-.viewer-container {
-    background-color: #1e1e1e; /* 어두운 배경 */
-    display: flex;
-    justify-content: center;
+/* 전체 뷰어 페이지를 감싸는 래퍼, 검은 배경 담당 */
+.viewer-page-wrapper {
+  background-color: #1e1e1e;
+  width: 100%;
 }
 
-.viewer-webtoon {
-    max-width: 800px;
-    width: 100%;
+/* 실제 웹툰 이미지가 표시되는 중앙 영역 */
+.viewer-webtoon-content {
+  max-width: 800px; /* 웹툰 최대 너비 */
+  width: 100%;
+  margin: 0 auto; /* 중앙 정렬 */
 }
 
 .viewer-image {
-    width: 100%;
-    display: block; /* 이미지 사이의 미세한 간격 제거 */
+  width: 100%;
+  display: block; /* 이미지 사이의 미세한 간격 제거 */
 }
 
-/* 뷰어 상하단 내비게이션 바 */
+/* 상단 고정 내비게이션 바 */
 .viewer-nav {
-    position: sticky;
-    z-index: 1001; /* 헤더보다 위에 오도록 */
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
+  position: sticky;
+  left: 0;
+  width: 100%;
+  z-index: 1001; /* 헤더보다 위에 오도록 설정 */
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  box-sizing: border-box; /* padding이 너비에 포함되도록 */
+  /* [추가] 부드러운 애니메이션 효과 */
+  transition: transform 0.3s ease-in-out;
 }
+
+/* 상단 내비게이션 바의 위치 */
 .viewer-nav.top {
-    top: 70px; /* 헤더 높이만큼 아래에 위치 */
+  top: 70px; /* 헤더 높이(70px) 바로 아래에 붙도록 */
 }
-.viewer-nav.bottom {
-    bottom: 0;
+
+/* [추가] 내비게이션 바를 숨기는 스타일 */
+.viewer-nav.hidden {
+  transform: translateY(-100%);
+}
+
+/* 내비게이션 바 내용물을 중앙에 정렬하기 위한 컨테이너 */
+.viewer-nav-container {
+  max-width: 800px; /* 웹툰 너비와 동일하게 설정 */
+  margin: 0 auto;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
 }
 
 .episode-title-nav {
-    font-size: 1.2em;
-    font-weight: bold;
+  font-size: 1.2em;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 20px;
+}
+
+.nav-buttons {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0; 
 }
 
 .nav-buttons button, .nav-buttons a {
-    background-color: #444;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    margin-left: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 1em;
+  background-color: #444;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin-left: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 1em;
+  white-space: nowrap; 
+  transition: background-color 0.2s;
+}
+
+.nav-buttons button:hover, .nav-buttons a:hover {
+    background-color: #555;
 }
 
 .nav-buttons button:disabled {
-    background-color: #222;
-    color: #666;
-    cursor: not-allowed;
+  background-color: #222;
+  color: #666;
+  cursor: not-allowed;
 }

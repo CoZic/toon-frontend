@@ -142,7 +142,7 @@ function HomePage() {
                             index : 현재 항목의 순번(0, 1, 2, 3, 4)을 의미
                     */}
                     <section className="webtoon-section">
-                        <h2 className="section-title">🔥 인기 TOP 10</h2>
+                        <h2 className="section-title">🔥 인기 TOP 5</h2>
                         <div className="webtoon-list">
                             {Array.from({ length: 5 }).map((_, index) => (
                                 <WebtoonCardSkeleton key={index} />
@@ -160,7 +160,7 @@ function HomePage() {
                 </>
             ) : (
                 <>
-                    <WebtoonSection title="🔥 인기 TOP 10" webtoons={popularWebtoons} />
+                    <WebtoonSection title="🔥 인기 TOP 5" webtoons={popularWebtoons} />
                     <WebtoonSection title="🚀 오늘의 업데이트" webtoons={todaysWebtoons} />
                 </>
             )}

@@ -92,3 +92,36 @@
     color: #666;
     margin: 0;
 }
+
+
+/* =================================== */
+/* 반응형 스타일 (모바일)         */
+/* 화면 너비가 768px 이하일 때 적용   */
+/* =================================== */
+@media (max-width: 768px) {
+
+    /* 메인 컨테이너의 좌우 여백을 줄여서 공간 확보 */
+    .homepage-container {
+        padding: 15px;
+    }
+
+    /* 메인 배너의 텍스트 크기와 여백을 줄임 */
+    .mainbanner-content h1 {
+        font-size: 2em;
+    }
+    .mainbanner-section {
+        padding: 40px 20px;
+    }
+
+    /* 웹툰 목록의 그리드 컬럼 수를 줄여서 썸네일을 더 크게 표시 */
+    .webtoon-list {
+        /* 한 줄에 최소 2개, 최대 3개의 카드가 보이도록 조정 */
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 15px; /* 카드 사이 간격도 줄임 */
+    }
+
+    /* 섹션 제목 폰트 크기 조정 */
+    .section-title {
+        font-size: 1.5em;
+    }
+}

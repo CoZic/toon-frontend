@@ -79,3 +79,21 @@
 .user-actions a:hover {
     color: #000;
 }
+
+
+@media (max-width: 768px) {
+    /* 메인 내비게이션 링크들을 숨김 */
+    .main-nav {
+        display: none;
+    }
+
+    /* 검색창을 조금 더 간결하게 */
+    .search-bar input {
+        width: 120px;
+    }
+
+    /* 로고 폰트 크기 조정 */
+    .logo a {
+        font-size: 1.5em;
+    }
+}

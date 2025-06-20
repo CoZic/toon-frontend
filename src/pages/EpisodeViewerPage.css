@@ -88,3 +88,28 @@
   color: #666;
   cursor: not-allowed;
 }
+
+.nav-buttons .like-button {
+    background-color: transparent;
+    color: #ccc;
+    font-size: 1.5em; /* 하트 아이콘 크기 */
+    padding: 0 10px;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.nav-buttons .like-button:hover {
+    color: #fff;
+    transform: scale(1.1);
+}
+
+/* 좋아요를 눌렀을 때의 스타일 */
+.nav-buttons .like-button.liked {
+    color: #e74c3c; /* 빨간색 하트 */
+}
+
+.nav-buttons .like-button span {
+    font-size: 0.7em; /* 숫자 폰트 크기 */
+    margin-left: 5px;
+    vertical-align: middle;
+    color: #fff;
+}

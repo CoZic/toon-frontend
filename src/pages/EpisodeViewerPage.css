@@ -6,7 +6,9 @@
 
 /* 실제 웹툰 이미지가 표시되는 중앙 영역 */
 .viewer-webtoon-content {
-  max-width: 800px; /* 웹툰 최대 너비 */
+  /* 웹툰 최대 너비 */
+  /* max-width: 800px; */
+  max-width: 690px;
   width: 100%;
   margin: 0 auto; /* 중앙 정렬 */
 }

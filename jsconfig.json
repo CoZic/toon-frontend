@@ -1,0 +1,7 @@
+{
+    "_comment": "절대 경로 설정 : 경로를 해석할 때, 항상 src 폴더를 기본 출발점으로 삼아줘 라고 알려주는 역할",
+    "compilerOptions": {
+        "baseUrl": "src"
+    },
+    "include": ["src"]
+}

@@ -75,8 +75,8 @@ function App() {
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 
-import Header from './components/common/Header';
-import Footer from './components/common/Footer';
+import Header from './components/layout/Header';
+import Footer from './components/layout/Footer';
 import HomePage from './pages/HomePage';				 	// 메인 페이지
 import WebtoonDetailPage from './pages/WebtoonDetailPage';	// 웹툰 상세 페이지
 import EpisodeViewerPage from './pages/EpisodeViewerPage';	// 에피소드 뷰어 페이지

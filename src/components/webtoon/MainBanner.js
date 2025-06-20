@@ -7,18 +7,6 @@ import { useNavigate } from 'react-router-dom';
 // props로 bannerData를 받도록 수정
 function MainBanner({ bannerData }) {
 
-    /*
-    return (
-        <div className="mainbanner-section">
-            <div className="mainbanner-content">
-                <h1>이번 주 최고 인기작!</h1>
-                <p>놓치면 후회할 명작을 지금 바로 만나보세요.</p>
-                <button className="mainbanner-button">첫 화 보기</button>
-            </div>
-        </div>
-    );
-    */
-
     // useNavigate 훅을 호출하여 페이지 이동 함수를 준비
     const navigate = useNavigate();
 

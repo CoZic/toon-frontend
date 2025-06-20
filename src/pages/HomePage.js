@@ -11,14 +11,14 @@
 */
 
 import React, { useState, useEffect } from 'react'; // useState와 useEffect를 import
-import axios from 'axios'; // axios import
+import { fetchFeaturedWebtoon, fetchTodayWebtoons, fetchPopularWebtoons } from 'api/webtoonApi'; 
 
-import ErrorPage from '../pages/common/ErrorPage'; // 공통 에러 페이지 import
+import ErrorPage from 'components/feedback/ErrorPage'; // 공통 에러 페이지 import
 
-import MainBanner from '../components/main/MainBanner';
-import MainBannerSkeleton from '../components/main/skeleton/MainBannerSkeleton';
-import WebtoonSection from '../components/main/WebtoonSection';
-import WebtoonCardSkeleton from '../components/main/skeleton/WebtoonCardSkeleton'; // 오늘의, Top10 웹툰 - 스켈레톤 컴포넌트
+import MainBanner from 'components/webtoon/MainBanner';
+import MainBannerSkeleton from 'components/webtoon/skeleton/MainBannerSkeleton';
+import WebtoonSection from 'components/webtoon/WebtoonSection';
+import WebtoonCardSkeleton from 'components/webtoon/skeleton/WebtoonCardSkeleton'; // 오늘의, Top10 웹툰 - 스켈레톤 컴포넌트
 import './HomePage.css';
 
 function HomePage() {
@@ -36,66 +36,40 @@ function HomePage() {
 
     // 4. 컴포넌트가 처음 렌더링될 때 API를 호출합니다.
     useEffect(() => {
-
-    /*
-        // 4-1. 하나의 API 호출 시 axios.get(호출할 URL)을 사용
-        const fetchTodaysWebtoons = async () => {
-            try {
-                
-                // 백엔드 API 호출 (Proxy 설정 덕분에 전체 주소를 적지 않아도 됩니다)
-                const response = await axios.get('/api/webtoons/today');
-
-                // 성공적으로 데이터를 받아오면 state를 업데이트합니다.
-                setTodaysWebtoons(response.data);
-
-            } catch (err) {
-                // 에러가 발생하면 에러 상태를 업데이트합니다.
-                console.error("오늘의 웹툰 데이터 로딩 실패:", err);
-                setError(err);
-            } finally {
-                // 성공하든 실패하든 로딩 상태를 false로 변경합니다.
-                setIsLoading(false);
-            }
-        };
-
-        fetchTodaysWebtoons();
-    */
-
-        // 4-2. 여러 API를 동시에 호출할 때는 Promise.all을 사용
-        // Promise.all : 두 개의 API 호출을 동시에 출발시켜서, 둘 다 도착하면 다음 작업을 처리하는 방식
-        const fetchAllWebtoons = async () => {
+        const fetchAllData = async () => {
+            setIsLoading(true);
             try {
 
-                // Promise.all을 사용해 두 API를 동시에 요청합니다.
-                const [bannerResponse, todayResponse, popularResponse] = await Promise.all([
-                    // axios.get('/api/webtoons/mainbanner'),
-                    // axios.get('/api/webtoons/today'),
-                    // axios.get('/api/webtoons/popular')
-
-                    // RestFull API를 사용하여 ?category= 방식으로 호출 URL 변경
-                    axios.get('/api/webtoons?category=featured'),   // 1. 메인 배너 데이터 호출
-                    axios.get('/api/webtoons?category=today'),  // 2. 오늘의 업데이트 데이터 호출
-                    axios.get('/api/webtoons?category=popular') // 3. 인기 TOP 10 데이터 호출
+                // Promise.all 안에서 서버와 동시에 여러 API를 호출합니다.
+                // 각 API 함수는 비동기적으로 데이터를 가져오고, 모든 요청이 완료되면 결과를 배열로 반환합니다.
+                const [bannerData, todayData, popularData] = await Promise.all([
+                    fetchFeaturedWebtoon(),
+                    fetchTodayWebtoons(),
+                    fetchPopularWebtoons()
                 ]);
 
-                // 4. 각각의 응답 데이터를 각자의 state에 저장합니다.
-                if (bannerResponse.data && bannerResponse.data.length > 0) {
-                    setMainBannerData(bannerResponse.data[0]);
+                // 1. 메인배너 데이터 세팅
+                if (bannerData && bannerData.length > 0) {
+                    setMainBannerData(bannerData[0]);
                 }
-                setTodaysWebtoons(todayResponse.data);
-                setPopularWebtoons(popularResponse.data);
-
+                // 2. 인기 TOP 5 웹툰 데이터 세팅
+                setPopularWebtoons(popularData);
+                // 3. 오늘의 업데이트 웹툰 데이터 세팅
+                setTodaysWebtoons(todayData);
+                
             } catch (err) {
                 console.error("웹툰 데이터 로딩 실패:", err);
                 setError(err);
             } finally {
-                setIsLoading(false);    // 모든 API 호출이 끝나면 로딩 상태를 false로 변경합니다. > 로딩이 끝났음을 의미
+                setIsLoading(false);
             }
         };
 
-        fetchAllWebtoons();
+        fetchAllData();
+    }, []);
 
-    }, []); // 빈 배열을 전달하여 최초 1회만 실행되도록 합니다.
+
+// ====================================================================================================================================================================================
 
     // 5. 로딩 중일 때 보여줄 화면 > 스켈레톤 로더를 사용으로 대체됨
     /*

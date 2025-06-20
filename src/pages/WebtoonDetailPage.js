@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom'; // useParams 훅 import
-import axios from 'axios';
+import { fetchWebtoonDetail } from 'api/webtoonApi';
+
 import './WebtoonDetailPage.css'; // 상세 페이지 CSS import
 import WebtoonDetailPageSkeleton from './skeleton/WebtoonDetailPageSkeleton'; // 상세 페이지 스켈레톤 import
-import ErrorPage from './common/ErrorPage'; // 공통 에러 페이지 import
+import ErrorPage from 'components/feedback/ErrorPage'; // 공통 에러 페이지 import
 
 
 function WebtoonDetailPage() {
@@ -16,30 +17,22 @@ function WebtoonDetailPage() {
     console.log("WebtoonDetailPage - webtoonId:", webtoonId);
 
     const [webtoonDetail, setWebtoonDetail] = useState(null);
+    // 정렬 순서를 관리할 state 추가 ('desc'가 최신순)
+    const [sortOrder, setSortOrder] = useState('desc'); 
+    
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // 에피소드가 존재하는지 여부를 boolean 값으로 저장하여 재사용합니다.
-    const hasEpisodes = webtoonDetail && webtoonDetail.episodes && webtoonDetail.episodes.length > 0;
-
-
-
-    // 정렬 순서를 관리할 state 추가 ('desc'가 최신순)
-    const [sortOrder, setSortOrder] = useState('desc'); 
-
     // 2. 컴포넌트가 마운트되거나 webtoonId가 변경될 때 API 호출
     useEffect(() => {
-        const fetchWebtoonDetail = async () => {
+        const loadWebtoonData = async () => {
 
             setIsLoading(true);
-
-            // API 호출 직전에 이전 데이터를 초기화하여 깜빡임 현상을 최소화
-            setWebtoonDetail(null)
+            setWebtoonDetail(null) // API 호출 직전에 이전 데이터를 초기화하여 깜빡임 현상을 최소화
 
             try {
-                const response = await axios.get(`/api/webtoons/${webtoonId}`);
-                setWebtoonDetail(response.data);
-
+                const data = await fetchWebtoonDetail(webtoonId);
+                setWebtoonDetail(data);
             } catch (err) {
                 console.error("콘텐츠 상세 정보 로딩 실패:", err);
                 setError(err);
@@ -47,8 +40,14 @@ function WebtoonDetailPage() {
                 setIsLoading(false);
             }
         };
-        fetchWebtoonDetail();
+        loadWebtoonData();
     }, [webtoonId]); // webtoonId가 바뀔 때마다 다시 데이터를 가져옴
+
+    // useMemo를 사용하여 webtoonDetail이 변경될 때만 등록된 에피소드가 있는지 계산(true/false 반환)
+    const hasEpisodes = useMemo(() => 
+        webtoonDetail && webtoonDetail.episodes && webtoonDetail.episodes.length > 0,
+        [webtoonDetail]
+    );
 
     // 정렬된 에피소드 목록을 계산하기 위해 useMemo 사용
     // sortOrder나 원본 에피소드 목록이 바뀔 때만 재정렬을 수행하여 성능 최적화
@@ -83,6 +82,7 @@ function WebtoonDetailPage() {
         }
     };
 
+// ====================================================================================================================================================================================
 
     if (isLoading) {
         return <WebtoonDetailPageSkeleton />;

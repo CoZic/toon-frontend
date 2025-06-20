@@ -10,15 +10,16 @@
         레이아웃 쉬프트(Layout Shift) 방지: 콘텐츠가 로딩된 후에도 화면 레이아웃이 갑자기 변하지 않아 눈이 편안합니다.
 */
 import React from 'react';
-import './WebtoonCardSkeleton.css'; // 스켈레톤 전용 CSS import
+import './WebtoonCardSkeleton.css';
+import 'styles/Skeleton.css';
 
 function WebtoonCardSkeleton() {
     return (
         <div className="skeleton-card">
-            <div className="skeleton-image"></div>
+            <div className="skeleton-image skeleton-pulse"></div>
             <div className="skeleton-info">
-                <div className="skeleton-text skeleton-title"></div>
-                <div className="skeleton-text skeleton-author"></div>
+                <div className="skeleton-text skeleton-title skeleton-pulse"></div>
+                <div className="skeleton-text skeleton-author skeleton-pulse"></div>
             </div>
         </div>
     );

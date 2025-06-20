@@ -1,0 +1,22 @@
+/* 모든 스켈레톤 요소에 이 클래스를 추가하여 반짝이는 효과를 적용합니다. */
+.skeleton-pulse {
+    /* 기본 배경색 */
+    background-color: #e0e0e0;
+    
+    /* 반짝이는 그라데이션 효과 */
+    background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+    background-size: 200% 100%;
+    
+    /* 애니메이션 적용 */
+    animation: skeleton-loading 1.5s infinite linear;
+}
+
+/* 애니메이션 키프레임 (프로젝트 내에서 단 한 번만 정의되면 됩니다) */
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}

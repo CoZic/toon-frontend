@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import { fetchEpisodeData } from 'api/webtoonApi';
+
 import './EpisodeViewerPage.css';
-import LoadingPage from './common/LoadingPage';
-import ErrorPage from './common/ErrorPage';
-import FloatingNavButtons from '../components/common/FloatingNavButtons';
+import LoadingPage from 'components/feedback/LoadingPage';
+import ErrorPage from 'components/feedback/ErrorPage';
+import FloatingNavButtons from 'components/common/FloatingNavButtons';
 
 // ViewerNav 컴포넌트는 에피소드 제목과 이전/다음 화로 이동하는 버튼을 포함합니다.
 const ViewerNav = ({ isVisible, title, webtoonId, prevEpisodeId, nextEpisodeId, onNavClick }) => (
@@ -32,21 +33,24 @@ function EpisodeViewerPage() {
 
     // 데이터 로딩용 useEffect
     useEffect(() => {
-        const fetchEpisodeData = async () => {
+        const loadEpisodeData = async () => {
 
             setIsLoading(true);
             setViewerData(null); // 데이터 초기화
 
             try {
-                const response = await axios.get(`/api/episodes/${episodeId}`);
-                setViewerData(response.data);
+
+                const data = await fetchEpisodeData(episodeId);
+                setViewerData(data);
+
             } catch (err) {
+                console.error("콘텐츠 상세 정보 로딩 실패:", err);
                 setError(err);
             } finally {
                 setIsLoading(false);
             }
         };
-        fetchEpisodeData();
+        loadEpisodeData();
         window.scrollTo(0, 0); // 이전/다음 화로 이동했을 때, 스크롤 위치가 그대로인 것을 방지하고 항상 페이지 맨 위에서 시작하도록 설정
     }, [episodeId]); // episodeId가 변경될 때(다음화'나 '이전화' 버튼을 눌러 URL의 episodeId가 바뀔 때) useEffect가 다시 실행
     
@@ -82,7 +86,7 @@ function EpisodeViewerPage() {
         }
     };
 
-// ================================================================================================================================================
+// ====================================================================================================================================================================================
 
     if (isLoading) return <LoadingPage />;
     if (error || !viewerData) return <ErrorPage message="해당 회차를 불러올 수 없습니다." />;

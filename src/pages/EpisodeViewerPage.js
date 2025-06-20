@@ -4,8 +4,9 @@ import axios from 'axios';
 import './EpisodeViewerPage.css';
 import LoadingPage from './common/LoadingPage';
 import ErrorPage from './common/ErrorPage';
-import FloatingNavButtons from '../components/viewer/FloatingNavButtons';
+import FloatingNavButtons from '../components/common/FloatingNavButtons';
 
+// ViewerNav 컴포넌트는 에피소드 제목과 이전/다음 화로 이동하는 버튼을 포함합니다.
 const ViewerNav = ({ isVisible, title, webtoonId, prevEpisodeId, nextEpisodeId, onNavClick }) => (
     <div className={`viewer-nav top ${!isVisible ? 'hidden' : ''}`}>
         <div className="viewer-nav-container">
@@ -28,13 +29,14 @@ function EpisodeViewerPage() {
     const [error, setError] = useState(null);
     
     const [isNavVisible, setIsNavVisible] = useState(true);
-    const [lastScrollY, setLastScrollY] = useState(0);
 
-    // [수정 1] 데이터 로딩 전용 useEffect
-    // 이 useEffect는 오직 episodeId가 변경될 때만 실행됩니다.
+    // 데이터 로딩용 useEffect
     useEffect(() => {
         const fetchEpisodeData = async () => {
+
             setIsLoading(true);
+            setViewerData(null); // 데이터 초기화
+
             try {
                 const response = await axios.get(`/api/episodes/${episodeId}`);
                 setViewerData(response.data);
@@ -45,35 +47,42 @@ function EpisodeViewerPage() {
             }
         };
         fetchEpisodeData();
-        window.scrollTo(0, 0);
-    }, [episodeId]);
-
-    // 스크롤 이벤트 핸들러는 useCallback으로 감싸서 불필요한 재생성을 방지합니다.
+        window.scrollTo(0, 0); // 이전/다음 화로 이동했을 때, 스크롤 위치가 그대로인 것을 방지하고 항상 페이지 맨 위에서 시작하도록 설정
+    }, [episodeId]); // episodeId가 변경될 때(다음화'나 '이전화' 버튼을 눌러 URL의 episodeId가 바뀔 때) useEffect가 다시 실행
+    
+    
+    // 스크롤 핸들러 로직을 '최상단' 여부만 체크하도록 단순화합니다.
     const handleScroll = useCallback(() => {
-        const currentScrollY = window.scrollY;
-        if (lastScrollY > currentScrollY || currentScrollY < 100) {
+        // 스크롤 위치가 50px 미만일 때만 상단 바를 표시
+        if (window.scrollY < 50) {
             setIsNavVisible(true);
         } else {
             setIsNavVisible(false);
         }
-        setLastScrollY(currentScrollY);
-    }, [lastScrollY]);
+    }, []);
 
-    // [수정 2] 스크롤 이벤트 리스너 전용 useEffect
-    // 이 useEffect는 handleScroll 함수가 변경될 때만 실행됩니다.
+    // 스크롤 이벤트 리스너 전용 useEffect : 최상단일 경우에만 네비게이션 바를 표시
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
-        // 컴포넌트가 사라질 때 이벤트 리스너를 깨끗하게 정리합니다.
+
+        /*
+            뒷정리 함수 (Cleanup 함수)
+            useEffect 안에서 return하는 함수는 '뒷정리'를 담당
+                useEffect가 다시 실행되기 직전에 실행되거나,
+                컴포넌트가 화면에서 사라질 때 실행하여 이벤트 리스너 제거
+       */
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, [handleScroll]);
+    }, [handleScroll]); // handleScroll은 useCallback으로 인해 재생성되지 않으므로, 이 effect도 최초 1회만 실행됨
 
     const handleNavClick = (targetEpisodeId) => {
         if (targetEpisodeId) {
             navigate(`/webtoon/${webtoonId}/episode/${targetEpisodeId}`);
         }
     };
+
+// ================================================================================================================================================
 
     if (isLoading) return <LoadingPage />;
     if (error || !viewerData) return <ErrorPage message="해당 회차를 불러올 수 없습니다." />;

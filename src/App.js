@@ -73,51 +73,52 @@ function App() {
 // ====================================================================================================
 
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 
 import Header from './components/common/Header';
-import HomePage from './pages/HomePage';
-import WebtoonDetailPage from './pages/WebtoonDetailPage'; // 웹툰 상세 페이지
-import EpisodeViewerPage from './pages/EpisodeViewerPage'; // 에피소드 뷰어 페이지
 import Footer from './components/common/Footer';
-import './App.css'; // 레이아웃 조정을 위해)
+import HomePage from './pages/HomePage';				 	// 메인 페이지
+import WebtoonDetailPage from './pages/WebtoonDetailPage';	// 웹툰 상세 페이지
+import EpisodeViewerPage from './pages/EpisodeViewerPage';	// 에피소드 뷰어 페이지
+import './App.css';
+
+// 헤더와 푸터가 포함된 공통 레이아웃 컴포넌트를 만듭니다.
+const MainLayout = () => {
+  return (
+	<div className="app-container">
+
+		{/* 헤더에는 로고, 내비게이션 링크, 검색창 등이 포함되어 있습니다. */}
+		<Header /> 
+
+		<main className="main-content">
+			{/* 이 부분에 자식 라우트의 컴포넌트가 렌더링됩니다. */}
+			<Outlet /> 
+		</main>
+
+		<Footer />
+	</div>
+  );
+};
 
 function App() {
 	return (
 		<Router>
-			<div className="app-container">
+			<Routes>
+				
+				{/* 공통 레이아웃을 사용하는 페이지들을 MainLayout 라우트의 자식으로 묶습니다. */}
+        		<Route element={<MainLayout />}>
+					{/* URL 주소가 /이면, HomePage.js 상세 설명서에 따라 조립 */}
+					<Route path="/" element={<HomePage />} />
 
-			{/* 
-				import Header from './components/common/Header';
+					{/* 웹툰 상세 페이지 */}
+					<Route path="/webtoon/:webtoonId" element={<WebtoonDetailPage />} />
+				</Route>
 
-				<Header /> 컴포넌트는 src/components/common/Header.js 파일에 정의되어 있습니다.
-				이 컴포넌트는 사이트의 상단에 고정된 헤더 역할을 합니다.
-				헤더에는 로고, 내비게이션 링크, 검색창 등이 포함되어 있습니다.
-			*/}
-			
-				<Header />
+				{/* 에피소드 뷰어 페이지 */}
+				<Route path="/webtoon/:webtoonId/episode/:episodeId" element={<EpisodeViewerPage />} />
 
-				{/* 메인 콘텐츠 영역 */}
-				<main className="main-content">
-					<Routes>
-						{/* URL 주소가 /이면, HomePage.js 상세 설명서에 따라 조립 */}
-						<Route path="/" element={<HomePage />} />
 
-						{/* <Route path="/webtoon/:id" element={<WebtoonDetailPage />} /> */}
-						{/* 다른 페이지 라우트들을 여기에 추가 */}
-            			
-						{/* 웹툰 상세 페이지 */}
-						<Route path="/webtoon/:webtoonId" element={<WebtoonDetailPage />} />
-
-						{/* 에피소드 뷰어 페이지 */}
-						<Route path="/webtoon/:webtoonId/episode/:episodeId" element={<EpisodeViewerPage />} />
-
-					</Routes>
-				</main>
-
-				<Footer />
-
-			</div>
+			</Routes>
 		</Router>
 	);
 }

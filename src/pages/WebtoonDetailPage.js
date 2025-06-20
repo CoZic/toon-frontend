@@ -88,7 +88,7 @@ function WebtoonDetailPage() {
         return <WebtoonDetailPageSkeleton />;
     }
 
-    // 2. 에러가 발생했거나, 로딩이 끝났는데 데이터가 없을 때 공통 에러 페이지를 보여줍니다.
+    // 에러가 발생했거나, 로딩이 끝났는데 데이터가 없을 때 공통 에러 페이지를 보여줍니다.
     if (error || !webtoonDetail) {
         return <ErrorPage message="해당 작품을 찾을 수 없습니다." />;
     }
@@ -104,7 +104,7 @@ function WebtoonDetailPage() {
                         {webtoonDetail.description}
                     </p>
 
-                    {/* 4. 첫 화 보기 버튼 추가 */}
+                    {/* 첫 화 보기 버튼 추가 */}
                     <div className="detail-actions">
 
                         {/* 에피소드가 있을 때만 "첫 화 보기" 버튼이 보이도록 조건부 렌더링 */}
@@ -120,7 +120,7 @@ function WebtoonDetailPage() {
             </header>
 
             <div className="episode-list-header">
-                {/* 5. 총 회차 수 및 정렬 버튼 추가 */}
+                {/* 총 회차 수 및 정렬 버튼 추가 */}
 
                 {/* 총 회차 수도 에피소드가 있을 때만 보이도록 설정 */}
                 <span className="total-episodes">
@@ -133,13 +133,13 @@ function WebtoonDetailPage() {
                         className="sort-button"
                         onClick={() => setSortOrder(prevOrder => prevOrder === 'desc' ? 'asc' : 'desc')}
                     >
-                        {sortOrder === 'desc' ? '첫화부터' : '최신순'}
+                        {sortOrder === 'desc' ? '최신순' : '첫화부터'}
                     </button>
                 )}
 
             </div>
 
-            {/* 3. 에피소드 목록을 보여주기 전에 데이터가 있는지 확인 */}
+            {/* 에피소드 목록을 보여주기 전에 데이터가 있는지 확인 */}
             {hasEpisodes ? (
                 <ul className="episode-list">
                     {sortedEpisodes.map(episode => (
@@ -157,7 +157,7 @@ function WebtoonDetailPage() {
                     ))}
                 </ul>
             ) : (
-                // 4. 에피소드가 없으면, 목록 대신 안내 문구를 보여줍니다.
+                // 에피소드가 없으면, 목록 대신 안내 문구를 보여줍니다.
                 <div className="no-episodes-message">
                     첫 번째 에피소드를 곧 만나보실 수 있습니다! 조금만 기다려주세요.
                 </div>

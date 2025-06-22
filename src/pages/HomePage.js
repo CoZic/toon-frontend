@@ -137,7 +137,7 @@ function HomePage() {
             ) : (
                 <>
                     <WebtoonSection title="🔥 인기 TOP 5" webtoons={popularWebtoons} />
-                    <WebtoonSection title="🚀 오늘의 업데이트" webtoons={todaysWebtoons} /> 
+                    <WebtoonSection title="🚀 오늘의 업데이트" webtoons={todaysWebtoons} />
                 </>
             )}
 

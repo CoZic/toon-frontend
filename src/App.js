@@ -80,6 +80,8 @@ import Footer from './components/layout/Footer';
 import HomePage from './pages/HomePage';				 	// 메인 페이지
 import WebtoonDetailPage from './pages/WebtoonDetailPage';	// 웹툰 상세 페이지
 import EpisodeViewerPage from './pages/EpisodeViewerPage';	// 에피소드 뷰어 페이지
+import LoginPage from './pages/LoginPage/LoginPage';
+
 import './App.css';
 
 // 헤더와 푸터가 포함된 공통 레이아웃 컴포넌트를 만듭니다.
@@ -116,7 +118,7 @@ function App() {
 
 				{/* 에피소드 뷰어 페이지 */}
 				<Route path="/webtoon/:webtoonId/episode/:episodeId" element={<EpisodeViewerPage />} />
-
+				<Route path="/login" element={<LoginPage />} /> 
 
 			</Routes>
 		</Router>

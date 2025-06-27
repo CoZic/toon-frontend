@@ -97,3 +97,30 @@
         font-size: 1.5em;
     }
 }
+
+/* 사용자 메뉴 */
+.user-actions a {
+    margin-left: 15px;
+    text-decoration: none;
+    color: #555;
+    font-size: 0.95em;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+/* 로그인 버튼 - 시각적으로 강조 */
+.user-actions a:first-child {
+    border: 1px solid #007bff;
+    color: #007bff;
+}
+
+.user-actions a:first-child:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* 회원가입 - 호버 시 강조 */
+.user-actions a:last-child:hover {
+    color: #007bff;
+}

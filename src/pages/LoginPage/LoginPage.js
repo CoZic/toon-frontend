@@ -1,10 +1,13 @@
+// src/pages/LoginPage/LoginPage.js
 import axios from 'axios';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import './LoginPage.css';
+import { UserContext } from '../../contexts/UserContext'; // ✅ context import
 
 function LoginPage() {
     const navigate = useNavigate();
+    const { setUser } = useContext(UserContext); // ✅ context 사용
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
@@ -19,12 +22,17 @@ function LoginPage() {
             });
 
             const token = response.data.token;
-            console.log('로그인 성공, 토큰:', token);
-
-            // 토큰 저장 (원한다면 localStorage 대신 cookie 등으로도 가능)
             localStorage.setItem('token', token);
 
-            // 홈으로 이동
+            // ✅ 토큰으로 사용자 정보 요청
+            const userInfoRes = await axios.get('http://localhost:8080/api/user-info', {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            // ✅ context에 사용자 정보 저장
+            setUser(userInfoRes.data);
+
+            // ✅ 홈 또는 마이페이지로 이동
             navigate('/');
         } catch (error) {
             console.error('로그인 실패:', error.response?.data || error.message);
@@ -59,7 +67,7 @@ function LoginPage() {
 
                 <div className="login-footer">
                     <span>계정이 없으신가요?</span>
-                    <a href="/register">회원가입</a>
+                    <Link to="/register">회원가입</Link>
                 </div>
             </form>
         </div>

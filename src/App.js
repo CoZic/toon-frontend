@@ -81,6 +81,9 @@ import HomePage from './pages/HomePage';				 	// 메인 페이지
 import WebtoonDetailPage from './pages/WebtoonDetailPage';	// 웹툰 상세 페이지
 import EpisodeViewerPage from './pages/EpisodeViewerPage';	// 에피소드 뷰어 페이지
 import LoginPage from './pages/LoginPage/LoginPage';
+import RegisterPage from './pages/LoginPage/RegisterPage';
+import { UserProvider } from './contexts/UserContext';
+import MyProfilePage from './pages/LoginPage/MyProfilePage';
 
 import './App.css';
 
@@ -104,24 +107,31 @@ const MainLayout = () => {
 
 function App() {
 	return (
-		<Router>
-			<Routes>
-				
-				{/* 공통 레이아웃을 사용하는 페이지들을 MainLayout 라우트의 자식으로 묶습니다. */}
-        		<Route element={<MainLayout />}>
-					{/* URL 주소가 /이면, HomePage.js 상세 설명서에 따라 조립 */}
-					<Route path="/" element={<HomePage />} />
+		<UserProvider>
+			<Router>
+				<Routes>
+					
+					{/* 공통 레이아웃을 사용하는 페이지들을 MainLayout 라우트의 자식으로 묶습니다. */}
+					<Route element={<MainLayout />}>
+						{/* URL 주소가 /이면, HomePage.js 상세 설명서에 따라 조립 */}
+						<Route path="/" element={<HomePage />} />
 
-					{/* 웹툰 상세 페이지 */}
-					<Route path="/webtoon/:webtoonId" element={<WebtoonDetailPage />} />
-				</Route>
+						{/* 웹툰 상세 페이지 */}
+						<Route path="/webtoon/:webtoonId" element={<WebtoonDetailPage />} />
+						
+						{/* 로그인 페이지 */}
+						<Route path="/login" element={<LoginPage />} /> 
+						<Route path="/register" element={<RegisterPage />} /> 
 
-				{/* 에피소드 뷰어 페이지 */}
-				<Route path="/webtoon/:webtoonId/episode/:episodeId" element={<EpisodeViewerPage />} />
-				<Route path="/login" element={<LoginPage />} /> 
+						<Route path="/mypage" element={<MyProfilePage />} />
+					</Route>
 
-			</Routes>
-		</Router>
+					{/* 에피소드 뷰어 페이지 */}
+					<Route path="/webtoon/:webtoonId/episode/:episodeId" element={<EpisodeViewerPage />} />
+
+				</Routes>
+			</Router>
+		</UserProvider>
 	);
 }
 
